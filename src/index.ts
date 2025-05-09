@@ -1,4 +1,26 @@
 /**
+ * BCP-47 Language Tag Validation Library
+ *
+ * A library for validating, parsing, and working with BCP-47 language tags
+ * according to RFC 5646.
+ */
+
+// Export types
+export * from "./types/index.js";
+
+// Export validators
+export {
+  validateLanguageTag,
+  isWellFormed,
+  isValid,
+  parseTag,
+  canonicalizeTag,
+} from "./validators/validator.js";
+
+// Current version
+export const VERSION = "0.1.0";
+
+/**
  * A TypeScript package for working with BCP-47 language tags
  */
 
