@@ -37,4 +37,4 @@ console.log(
 );
 console.log(
   "'ch' is not a valid ISO 639 language code. It might be a typo for 'zh' (Chinese) or intended to represent Swiss German, which should be 'gsw-CH'."
-); 
+);
