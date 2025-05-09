@@ -2,17 +2,17 @@
 
 ## Installation
 
-First, install the `ally-bcp-47` package using npm, yarn, or pnpm:
+First, install the `@aleksejdix/ally-bcp47` package using npm, yarn, or pnpm:
 
 ```bash
 # npm
-npm install ally-bcp-47
+npm install @aleksejdix/ally-bcp47
 
 # yarn
-yarn add ally-bcp-47
+yarn add @aleksejdix/ally-bcp47
 
 # pnpm
-pnpm add ally-bcp-47
+pnpm add @aleksejdix/ally-bcp47
 ```
 
 ## Basic Usage
@@ -20,7 +20,7 @@ pnpm add ally-bcp-47
 Here's a simple example of how to use the library:
 
 ```typescript
-import { validateLanguageTag, isValid } from "ally-bcp-47";
+import { validateLanguageTag, isValid } from "@aleksejdix/ally-bcp47";
 
 // Quick validation
 const isValidTag = isValid("en-US"); // true
@@ -45,7 +45,7 @@ console.log(invalidResult.errors);
 
 ## When to Use This Library
 
-The `ally-bcp-47` library is particularly useful in the following scenarios:
+The `@aleksejdix/ally-bcp47` library is particularly useful in the following scenarios:
 
 1. **Internationalization (i18n)**: When building multilingual applications
 2. **Web Accessibility**: Ensuring proper language identification for screen readers

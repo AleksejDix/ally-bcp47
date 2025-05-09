@@ -35,3 +35,4 @@ coverage/
 .DS_Store
 .npm
 .eslintcache 
+.vercel

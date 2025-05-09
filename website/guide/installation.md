@@ -2,24 +2,24 @@
 
 ## Package Managers
 
-You can install the `ally-bcp-47` library using your preferred package manager:
+You can install the `@aleksejdix/ally-bcp47` library using your preferred package manager:
 
 ### npm
 
 ```bash
-npm install ally-bcp-47
+npm install @aleksejdix/ally-bcp47
 ```
 
 ### yarn
 
 ```bash
-yarn add ally-bcp-47
+yarn add @aleksejdix/ally-bcp47
 ```
 
 ### pnpm
 
 ```bash
-pnpm add ally-bcp-47
+pnpm add @aleksejdix/ally-bcp47
 ```
 
 ## Requirements
@@ -36,13 +36,13 @@ It has zero production dependencies, making it lightweight and safe to use in an
 ### ESM (Recommended)
 
 ```typescript
-import { validateLanguageTag } from "ally-bcp-47";
+import { validateLanguageTag } from "@aleksejdix/ally-bcp47";
 ```
 
 ### CommonJS
 
 ```javascript
-const { validateLanguageTag } = require("ally-bcp-47");
+const { validateLanguageTag } = require("@aleksejdix/ally-bcp47");
 ```
 
 ## Browser Usage
@@ -51,7 +51,7 @@ The library can also be used directly in the browser:
 
 ```html
 <script type="module">
-  import { validateLanguageTag } from "./node_modules/ally-bcp-47/dist/index.js";
+  import { validateLanguageTag } from "./node_modules/@aleksejdix/ally-bcp47/dist/index.js";
 
   const result = validateLanguageTag("en-US");
   console.log(result.isValid); // true
@@ -64,7 +64,7 @@ You can also use the library via a CDN:
 
 ```html
 <script type="module">
-  import { validateLanguageTag } from "https://unpkg.com/ally-bcp-47/dist/index.js";
+  import { validateLanguageTag } from "https://unpkg.com/@aleksejdix/ally-bcp47/dist/index.js";
 
   const result = validateLanguageTag("en-US");
   console.log(result.isValid); // true

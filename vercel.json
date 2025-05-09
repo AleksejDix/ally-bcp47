@@ -1,0 +1,10 @@
+{
+  "buildCommand": "npm run docs:build",
+  "outputDirectory": "website/.vitepress/dist",
+  "framework": "vitepress",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "github": {
+    "silent": true
+  }
+} 

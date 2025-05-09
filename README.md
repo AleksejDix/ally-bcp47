@@ -1,6 +1,13 @@
 # ally-bcp-47
 
+[![npm version](https://img.shields.io/npm/v/@aleksejdix/ally-bcp47.svg)](https://www.npmjs.com/package/@aleksejdix/ally-bcp47)
+
 A comprehensive TypeScript library for validating, parsing, and working with BCP-47 language tags according to [RFC 5646](https://tools.ietf.org/html/rfc5646).
+
+## Links
+
+- [npm package](https://www.npmjs.com/package/@aleksejdix/ally-bcp47)
+- [GitHub repository](https://github.com/AleksejDix/ally-bcp47)
 
 ## Features
 
@@ -13,7 +20,7 @@ A comprehensive TypeScript library for validating, parsing, and working with BCP
 ## Installation
 
 ```bash
-npm install ally-bcp-47
+npm install @aleksejdix/ally-bcp47
 ```
 
 ## Usage
@@ -21,7 +28,7 @@ npm install ally-bcp-47
 ### Basic Validation
 
 ```typescript
-import { isValid, isWellFormed } from "ally-bcp-47";
+import { isValid, isWellFormed } from "@aleksejdix/ally-bcp47";
 
 // Check if a tag is well-formed (syntax only)
 isWellFormed("en-US"); // true
@@ -35,7 +42,7 @@ isValid("xy-ZZ"); // false (invalid subtags)
 ### Detailed Validation
 
 ```typescript
-import { validateLanguageTag } from "ally-bcp-47";
+import { validateLanguageTag } from "@aleksejdix/ally-bcp47";
 
 const result = validateLanguageTag("en-US");
 console.log(result);
@@ -71,7 +78,7 @@ console.log(invalidResult);
 ### Parsing Tags
 
 ```typescript
-import { parseTag } from "ally-bcp-47";
+import { parseTag } from "@aleksejdix/ally-bcp47";
 
 const tag = parseTag("zh-Hans-CN-x-private");
 console.log(tag);
@@ -91,7 +98,7 @@ console.log(tag);
 The `validateLanguageTag` function accepts options to customize the validation:
 
 ```typescript
-import { validateLanguageTag } from "ally-bcp-47";
+import { validateLanguageTag } from "@aleksejdix/ally-bcp47";
 
 validateLanguageTag("en-US", {
   checkRegistry: true, // Whether to validate against the registry (default: true)

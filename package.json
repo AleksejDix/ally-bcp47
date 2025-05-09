@@ -1,5 +1,5 @@
 {
-  "name": "ally-bcp-47",
+  "name": "@aleksejdix/ally-bcp47",
   "version": "1.0.0",
   "description": "TypeScript package for working with BCP-47 language tags",
   "type": "module",
@@ -34,9 +34,14 @@
   "keywords": [
     "typescript",
     "bcp47",
-    "language-tags"
+    "language-tags",
+    "accessibility",
+    "i18n",
+    "internationalization",
+    "localization",
+    "a11y"
   ],
-  "author": "",
+  "author": "Aleksej Dix",
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^20.11.30",
@@ -51,10 +56,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AleksejDix/ally-lang.git"
+    "url": "git+https://github.com/AleksejDix/ally-bcp47.git"
   },
   "bugs": {
-    "url": "https://github.com/AleksejDix/ally-lang/issues"
+    "url": "https://github.com/AleksejDix/ally-bcp47/issues"
   },
-  "homepage": "https://github.com/AleksejDix/ally-lang#readme"
+  "homepage": "https://github.com/AleksejDix/ally-bcp47#readme",
+  "publishConfig": {
+    "access": "public"
+  }
 }
