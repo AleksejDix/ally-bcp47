@@ -12,8 +12,28 @@ export default {
       { text: "Guide", link: "/guide/" },
       { text: "API", link: "/api/" },
       { text: "Examples", link: "/examples/" },
-      { text: "GitHub", link: "https://github.com/AleksejDix/ally-bcp47" },
     ],
+    search: {
+      provider: 'local',
+      options: {
+        detailedView: true,
+        translations: {
+          button: {
+            buttonText: 'Search ally-bcp47',
+            buttonAriaLabel: 'Search documentation'
+          },
+          modal: {
+            noResultsText: 'No results found',
+            resetButtonTitle: 'Clear search',
+            footer: {
+              selectText: 'to select',
+              navigateText: 'to navigate',
+              closeText: 'to close'
+            }
+          }
+        }
+      }
+    },
     sidebar: {
       "/articles/": [
         {
@@ -121,6 +141,7 @@ export default {
       ],
     },
     socialLinks: [
+      { icon: "npm", link: "https://www.npmjs.com/package/@aleksejdix/ally-bcp47" },
       { icon: "github", link: "https://github.com/AleksejDix/ally-bcp47" },
     ],
     footer: {
