@@ -9,7 +9,7 @@ The ally-bcp-47 library provides a comprehensive set of functions for working wi
 The primary function for validating language tags. Returns a detailed validation result.
 
 ```typescript
-import { validateLanguageTag } from "ally-bcp-47";
+import { validateLanguageTag } from "@aleksejdix/ally-bcp47";
 
 const result = validateLanguageTag("en-US");
 console.log(result.isValid); // true
@@ -24,7 +24,7 @@ console.log(result.tag); // { tag: 'en-US', language: 'en', region: 'us' }
 A convenience function that returns true if a tag is valid (well-formed and all subtags exist in the registry).
 
 ```typescript
-import { isValid } from "ally-bcp-47";
+import { isValid } from "@aleksejdix/ally-bcp47";
 
 console.log(isValid("en-US")); // true
 console.log(isValid("en-ZZ")); // false (ZZ is not a valid region code)
@@ -37,7 +37,7 @@ console.log(isValid("en-ZZ")); // false (ZZ is not a valid region code)
 A convenience function that returns true if a tag is well-formed according to BCP-47 syntax rules.
 
 ```typescript
-import { isWellFormed } from "ally-bcp-47";
+import { isWellFormed } from "@aleksejdix/ally-bcp47";
 
 console.log(isWellFormed("en-US")); // true
 console.log(isWellFormed("en--US")); // false (double hyphen is not allowed)
@@ -50,7 +50,7 @@ console.log(isWellFormed("en--US")); // false (double hyphen is not allowed)
 Parses a language tag into its component parts.
 
 ```typescript
-import { parseTag } from "ally-bcp-47";
+import { parseTag } from "@aleksejdix/ally-bcp47";
 
 const parsed = parseTag("en-US");
 console.log(parsed); // { language: 'en', region: 'us' }
@@ -63,13 +63,39 @@ console.log(parsed); // { language: 'en', region: 'us' }
 Canonicalizes a language tag to its preferred form.
 
 ```typescript
-import { canonicalizeTag } from "ally-bcp-47";
+import { canonicalizeTag } from "@aleksejdix/ally-bcp47";
 
 console.log(canonicalizeTag("en-us")); // 'en-US'
 console.log(canonicalizeTag("zh-hans-cn")); // 'zh-CN'
 ```
 
 [Learn more about canonicalizeTag](/api/canonicalize-tag)
+
+### isValidLanguageTag(tag)
+
+A simplified validation function using regular expressions.
+
+```typescript
+import { isValidLanguageTag } from "@aleksejdix/ally-bcp47";
+
+console.log(isValidLanguageTag("en-US")); // true
+console.log(isValidLanguageTag("123")); // false (language must start with a letter)
+```
+
+[Learn more about isValidLanguageTag](/api/is-valid-language-tag)
+
+### getLanguageDisplayName(tag, displayLocale?)
+
+Converts a language tag to a human-readable language name.
+
+```typescript
+import { getLanguageDisplayName } from "@aleksejdix/ally-bcp47";
+
+console.log(getLanguageDisplayName("en")); // "English"
+console.log(getLanguageDisplayName("fr", "de")); // "Französisch"
+```
+
+[Learn more about getLanguageDisplayName](/api/get-language-display-name)
 
 ## Types
 
@@ -81,7 +107,7 @@ import {
   ValidationError,
   ValidationWarning,
   LanguageTag,
-} from "ally-bcp-47";
+} from "@aleksejdix/ally-bcp47";
 ```
 
 ## Error Handling
@@ -110,7 +136,7 @@ import {
   isValidLanguageCode,
   isValidScriptCode,
   isValidRegionCode,
-} from "ally-bcp-47";
+} from "@aleksejdix/ally-bcp47";
 
 console.log(isValidLanguageCode("en")); // true
 console.log(isValidScriptCode("Latn")); // true
