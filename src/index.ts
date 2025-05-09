@@ -18,7 +18,7 @@ export {
 } from "./validators/validator.js";
 
 // Current version
-export const VERSION = "0.1.0";
+export const VERSION = "1.1.0";
 
 /**
  * A TypeScript package for working with BCP-47 language tags
