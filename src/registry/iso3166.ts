@@ -110,6 +110,21 @@ export const REGION_CODE_CORRECTIONS: Record<string, string> = {
 };
 
 /**
+ * Map of preferred values for region codes
+ * According to BCP-47 canonicalization rules
+ */
+export const REGION_PREFERRED_VALUES: Record<string, string> = {
+  // Deprecated region codes with preferred replacements
+  BU: "MM", // Burma -> Myanmar
+  CS: "RS", // Serbia and Montenegro -> Serbia
+  DD: "DE", // East Germany -> Germany
+  FX: "FR", // Metropolitan France -> France
+  TP: "TL", // East Timor -> Timor-Leste
+  YU: "RS", // Yugoslavia -> Serbia
+  ZR: "CD", // Zaire -> Democratic Republic of the Congo
+};
+
+/**
  * Checks if a region code is valid according to ISO 3166
  *
  * @param code The region code to validate
@@ -127,4 +142,27 @@ export function isValidRegionCode(code: string): boolean {
  */
 export function getSuggestedRegionCode(code: string): string | undefined {
   return REGION_CODE_CORRECTIONS[code.toUpperCase()];
+}
+
+/**
+ * Checks if a region code has a preferred value in the registry
+ *
+ * @param code The region code to check
+ * @returns True if the code has a preferred value, false otherwise
+ */
+export function hasPreferredRegionValue(code: string): boolean {
+  return code.toUpperCase() in REGION_PREFERRED_VALUES;
+}
+
+/**
+ * Gets the preferred value for a region code
+ *
+ * @param code The region code to get the preferred value for
+ * @returns The preferred value or the original code if no preferred value exists
+ */
+export function getRegionPreferredValue(code: string): string {
+  const upperCode = code.toUpperCase();
+  return upperCode in REGION_PREFERRED_VALUES
+    ? REGION_PREFERRED_VALUES[upperCode]
+    : upperCode;
 }
