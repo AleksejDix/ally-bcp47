@@ -1,18 +1,25 @@
 /* Custom styles for the documentation site */
 
 :root {
-  --vp-c-brand: #3a5ccc;
-  --vp-c-brand-light: #5a7adc;
-  --vp-c-brand-dark: #2a44a8;
+  --vp-c-brand: #ffdd00;
+  --vp-c-brand-light: #ffe133;
+  --vp-c-brand-dark: #e6c700;
   --vp-c-green: #42b883;
   --vp-c-red: #e74c3c;
   --vp-c-yellow: #f39c12;
+  
+  /* Modify text color that appears on brand color backgrounds for better contrast */
+  --vp-c-brand-text: #000000;
+  --vp-button-brand-text: #000000;
+  --vp-button-brand-hover: #ffe133;
+  --vp-button-brand-active: #e6c700;
 }
 
 .dark {
-  --vp-c-brand: #5a7adc;
-  --vp-c-brand-light: #7b96e4;
-  --vp-c-brand-dark: #3a5ccc;
+  --vp-c-brand: #ffdd00;
+  --vp-c-brand-light: #ffe133;
+  --vp-c-brand-dark: #e6c700;
+  --vp-c-brand-text: #000000;
 }
 
 /* Custom styling for code blocks */
@@ -20,13 +27,18 @@
   border-radius: 8px;
 }
 
+/* Ensure buttons have black text for better contrast with yellow background */
+.VPButton.brand {
+  color: var(--vp-c-brand-text);
+}
+
 /* Custom styling for the home page */
 .VPHero .name {
   font-weight: 800;
   background: linear-gradient(
     to right,
-    var(--vp-c-brand),
-    var(--vp-c-brand-light)
+    var(--vp-c-brand-dark),
+    var(--vp-c-brand)
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

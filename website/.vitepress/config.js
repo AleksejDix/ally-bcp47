@@ -1,6 +1,9 @@
 export default {
   title: "ally-bcp-47",
   description: "A comprehensive BCP-47 language tag validation library",
+  head: [
+    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }]
+  ],
   themeConfig: {
     logo: "/logo.svg",
     nav: [
@@ -9,7 +12,7 @@ export default {
       { text: "Guide", link: "/guide/" },
       { text: "API", link: "/api/" },
       { text: "Examples", link: "/examples/" },
-      { text: "GitHub", link: "https://github.com/AleksejDix/ally-lang" },
+      { text: "GitHub", link: "https://github.com/AleksejDix/ally-bcp47" },
     ],
     sidebar: {
       "/articles/": [
@@ -118,11 +121,11 @@ export default {
       ],
     },
     socialLinks: [
-      { icon: "github", link: "https://github.com/AleksejDix/ally-lang" },
+      { icon: "github", link: "https://github.com/AleksejDix/ally-bcp47" },
     ],
     footer: {
-      message: "Released under the MIT License.",
-      copyright: "Copyright © 2023-present",
+      message: "Powered by <a href=\"https://allyship.dev/\" target=\"_blank\">Allyship.dev</a>",
+      copyright: "Copyright © 2023-present | Made by Aleksej Dix | Released under the MIT License",
     },
   },
 };
