@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="128" height="128" rx="16" fill="#3A5CCC" />
+  <path d="M36 48L48 32H64L52 48H36Z" fill="white" />
+  <path d="M52 48L64 32H80L68 48H52Z" fill="#E8EEFF" />
+  <path d="M68 48L80 32H92L80 48H68Z" fill="white" />
+  <path d="M36 48L48 64H64L52 48H36Z" fill="#E8EEFF" />
+  <path d="M52 48L64 64H80L68 48H52Z" fill="white" />
+  <path d="M68 48L80 64H92L80 48H68Z" fill="#E8EEFF" />
+  <path d="M48 64L36 80H52L64 64H48Z" fill="white" />
+  <path d="M64 64L52 80H68L80 64H64Z" fill="#E8EEFF" />
+  <path d="M80 64L68 80H84L92 64H80Z" fill="white" />
+  <path d="M36 80L48 96H64L52 80H36Z" fill="#E8EEFF" />
+  <path d="M52 80L64 96H80L68 80H52Z" fill="white" />
+  <path d="M68 80L80 96H92L84 80H68Z" fill="#E8EEFF" />
+  <text x="64" y="60" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="white" text-anchor="middle">BCP</text>
+  <text x="64" y="85" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="white" text-anchor="middle">47</text>
+</svg> 
