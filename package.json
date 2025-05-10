@@ -25,6 +25,8 @@
     "test:european": "vitest run src/tests/european-countries.test.ts src/tests/eaa-compliance.test.ts",
     "test:accessibility": "vitest run -t 'Accessibility Extensions'",
     "test:ada": "vitest run src/tests/ada-compliance.test.ts",
+    "test:performance": "node ./performance-tests.js",
+    "test:performance:vitest": "vitest run src/tests/performance.test.ts",
     "demo:european": "node ./demo-european-tags.js",
     "demo:ada": "node ./demo-ada-tags.js",
     "docs:dev": "vitepress dev website",

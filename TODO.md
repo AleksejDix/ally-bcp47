@@ -10,6 +10,7 @@
 - ✅ Registry validation for language, region, script subtags
 - ✅ European country-language mapping
 - ✅ Type definitions
+- ✅ Display name functionality (`getLanguageDisplayName`)
 
 ### Needs Implementation/Improvement
 
@@ -37,6 +38,9 @@
 - ✅ Section 508 compliance documentation
 - ✅ API reference documentation (complete for all functions)
 - ✅ Performance benchmarks
+- ✅ Updated branding (language icon SVG)
+- ✅ Allyship.dev attribution in footer
+- ✅ Updated color scheme
 
 ### Needs Implementation/Improvement
 
@@ -54,7 +58,8 @@
 - ✅ European country-specific tests
 - ✅ Accessibility compliance tests
 - ✅ ADA compliance tests
-- ✅ Performance tests
+- ✅ Performance tests (Node.js and Vitest versions)
+- ✅ Benchmarks for core functions with different tag complexities
 
 ### Needs Implementation/Improvement
 
@@ -66,8 +71,8 @@
 
 ### Already Implemented
 
-- ✅ npm package published
-- ✅ GitHub repository
+- ✅ npm package published (version 1.1.0)
+- ✅ GitHub repository (updated URLs to ally-bcp47)
 - ✅ Documentation website
 - ✅ Buy me a coffee support button
 
