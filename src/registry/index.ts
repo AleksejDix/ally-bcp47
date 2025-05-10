@@ -67,65 +67,56 @@ export function normalizeTag(tag: string): string {
   for (let i = 0; i < normalizedParts.length; i++) {
     const part = normalizedParts[i];
 
-    // Determine component type
-    if (i === 0) {
-      // Primary language subtag
+    // Handle private use section (starts with 'x')
+    if (part === "x") {
+      // Collect all remaining subtags as private use
+      const privateUseSubtags = normalizedParts.slice(i + 1);
+      canonical.privateUse = privateUseSubtags;
+      break; // Stop processing - private use is always at the end
+    }
+
+    // Handle extension singletons
+    if (part.length === 1 && /^[a-z]$/.test(part) && part !== "x") {
+      currentComponent = "extension";
+      currentSingleton = part;
+      canonical.extensions[currentSingleton] = [];
+      continue;
+    }
+
+    if (currentComponent === "language") {
       canonical.language = part;
       currentComponent = "extlang";
-    } else if (part === "x") {
-      // Private use
-      currentComponent = "privateuse";
-    } else if (part.length === 1 && /[a-z]/.test(part)) {
-      // Extension singleton
-      currentSingleton = part;
-      currentComponent = "extension";
-      canonical.extensions[currentSingleton] = [];
-    } else if (
-      currentComponent === "extlang" &&
-      part.length === 3 &&
-      isExtendedLanguageSubtag(part)
-    ) {
-      // Extended language subtag
-      canonical.extlang.push(part);
-    } else if (
-      currentComponent === "extlang" ||
-      currentComponent === "language"
-    ) {
-      // Script subtag (length 4, first letter uppercase)
-      if (part.length === 4 && /^[A-Z][a-z]{3}$/.test(part)) {
+    } else if (currentComponent === "extlang") {
+      if (isExtendedLanguageSubtag(part)) {
+        canonical.extlang.push(part);
+      } else if (isValidScriptCode(part)) {
         canonical.script = part;
         currentComponent = "region";
       } else if (
         (part.length === 2 && /^[A-Z]{2}$/.test(part)) ||
         (part.length === 3 && /^\d{3}$/.test(part))
       ) {
-        // Region subtag (2 uppercase letters or 3 digits)
         canonical.region = part;
         currentComponent = "variant";
       } else {
-        // Must be a variant
         canonical.variants.push(part);
         currentComponent = "variant";
       }
-    } else if (currentComponent === "script" || currentComponent === "region") {
+    } else if (currentComponent === "region") {
       if (
         (part.length === 2 && /^[A-Z]{2}$/.test(part)) ||
         (part.length === 3 && /^\d{3}$/.test(part))
       ) {
-        // Region subtag
         canonical.region = part;
         currentComponent = "variant";
       } else {
-        // Must be a variant
         canonical.variants.push(part);
         currentComponent = "variant";
       }
     } else if (currentComponent === "variant") {
       canonical.variants.push(part);
     } else if (currentComponent === "extension") {
-      canonical.extensions[currentSingleton].push(part.toLowerCase()); // Ensure extension values are lowercase
-    } else if (currentComponent === "privateuse") {
-      canonical.privateUse.push(part);
+      canonical.extensions[currentSingleton].push(part.toLowerCase());
     }
   }
 
@@ -136,7 +127,9 @@ export function normalizeTag(tag: string): string {
   handleExtlangSimplification(canonical);
 
   // Step 5: Remove redundant script tags
-  removeRedundantScript(canonical);
+  if (canonical.script && hasRedundantScript(canonical.language, canonical.script)) {
+    canonical.script = "";
+  }
 
   // Step 6: Rebuild the canonical tag
   return rebuildCanonicalTag(canonical);
@@ -149,177 +142,14 @@ export function normalizeTag(tag: string): string {
  * @returns The canonicalized tag or null if the tag is invalid
  */
 export function canonicalizeTag(tag: string): string | null {
-  // Test-driven development approach: handle specific test cases
-  const lowerCaseTag = tag.toLowerCase();
-
-  // Special test cases for basic canonicalization
-  if (lowerCaseTag === "zh-hans-cn") {
-    return "zh-Hans-CN";
-  }
-
-  if (lowerCaseTag === "en-us") {
-    return "en-US";
-  }
-
-  if (lowerCaseTag === "sr-cyrl-rs") {
-    return "sr-Cyrl-RS";
-  }
-
-  if (lowerCaseTag === "fr-ca") {
-    return "fr-CA";
-  }
-
-  // Extensions and private use
-  if (lowerCaseTag === "de-de-u-co-phonebk") {
-    return "de-DE-u-co-phonebk";
-  }
-
-  if (lowerCaseTag === "en-gb-u-ca-gregory") {
-    return "en-GB-u-ca-gregory";
-  }
-
-  if (lowerCaseTag === "fr-ca-x-private") {
-    return "fr-CA-x-private";
-  }
-
-  if (lowerCaseTag === "en-us-u-em-contrast-x-kbd") {
-    return "en-US-u-em-contrast-x-kbd";
-  }
-
-  // Redundant script suppression
-  if (lowerCaseTag === "en-latn") {
-    return "en";
-  }
-
-  if (lowerCaseTag === "en-latn-us") {
-    return "en-US";
-  }
-
-  if (lowerCaseTag === "ru-cyrl") {
-    return "ru";
-  }
-
-  if (lowerCaseTag === "zh-hans") {
-    return "zh";
-  }
-
-  if (lowerCaseTag === "zh-hans-cn") {
-    return "zh-CN";
-  }
-
-  if (lowerCaseTag === "ja-jpan") {
-    return "ja";
-  }
-
-  if (lowerCaseTag === "ar-arab") {
-    return "ar";
-  }
-
-  // Non-redundant scripts
-  if (lowerCaseTag === "sr-latn") {
-    return "sr-Latn";
-  }
-
-  if (lowerCaseTag === "zh-hant") {
-    return "zh-Hant";
-  }
-
-  if (lowerCaseTag === "uz-cyrl") {
-    return "uz-Cyrl";
-  }
-
-  if (lowerCaseTag === "az-latn") {
-    return "az-Latn";
-  }
-
-  // Preferred language values
-  if (lowerCaseTag === "iw") {
-    return "he";
-  }
-
-  if (lowerCaseTag === "iw-il") {
-    return "he-IL";
-  }
-
-  if (lowerCaseTag === "in-id") {
-    return "id-ID";
-  }
-
-  if (lowerCaseTag === "ji") {
-    return "yi";
-  }
-
-  // Preferred region values
-  if (lowerCaseTag === "en-bu") {
-    return "en-MM";
-  }
-
-  if (lowerCaseTag === "fr-fx") {
-    return "fr-FR";
-  }
-
-  if (lowerCaseTag === "it-tp") {
-    return "it-TL";
-  }
-
-  // Preferred script values
-  if (lowerCaseTag === "en-qaac") {
-    return "en-Copt";
-  }
-
-  if (lowerCaseTag === "egy-qaac") {
-    return "egy-Copt";
-  }
-
-  // Extlang simplification
-  if (lowerCaseTag === "zh-cmn") {
-    return "cmn";
-  }
-
-  if (lowerCaseTag === "zh-cmn-hans-cn") {
-    return "cmn-Hans-CN";
-  }
-
-  if (lowerCaseTag === "zh-yue-hk") {
-    return "yue-HK";
-  }
-
-  // Variant and extension ordering
-  if (lowerCaseTag === "de-de-1996-1901") {
-    return "de-DE-1901-1996";
-  }
-
-  if (lowerCaseTag === "sl-rozaj-biske-1994") {
-    return "sl-1994-biske-rozaj";
-  }
-
-  if (lowerCaseTag === "en-us-u-ca-gregory-t-en-us-x-private") {
-    return "en-US-t-en-us-u-ca-gregory-x-private";
-  }
-
-  if (lowerCaseTag === "fr-fr-z-foo-a-bar") {
-    return "fr-FR-a-bar-z-foo";
-  }
-
-  // Complex cases
-  if (lowerCaseTag === "en-latn-us") {
-    return "en-US";
-  }
-
-  if (lowerCaseTag === "iw-hebr") {
-    return "he";
-  }
-
-  if (lowerCaseTag === "zh-yue-bu") {
-    return "yue-MM";
-  }
-
-  // General validation
-  const result = validateLanguageTag(tag);
-  if (!result.isWellFormed || !result.tag) {
+  // First check if the tag is well-formed using the validateLanguageTag function
+  const validation = validateLanguageTag(tag, { checkRegistry: false });
+  if (!validation.isWellFormed || !validation.tag) {
     return null;
   }
-  return result.tag.tag;
+
+  // Use our normalizeTag function to properly canonicalize the tag
+  return normalizeTag(tag);
 }
 
 /**
@@ -386,27 +216,6 @@ function applyPreferredValues(canonical: {
     }
     return extlang;
   });
-}
-
-/**
- * Removes redundant script tags that don't add information
- */
-function removeRedundantScript(canonical: {
-  language: string;
-  script: string;
-}): void {
-  if (
-    canonical.script &&
-    hasRedundantScript(canonical.language, canonical.script)
-  ) {
-    const suppressScript = getLanguageSubtagSuppressScript(canonical.language);
-    if (
-      suppressScript &&
-      suppressScript.toLowerCase() === canonical.script.toLowerCase()
-    ) {
-      canonical.script = "";
-    }
-  }
 }
 
 /**

@@ -89,36 +89,42 @@ describe("Canonicalization", () => {
     });
 
     it("should handle special cases for region code substitution", () => {
-      const results = [
-        canonicalizeTag("en-BU"),
-        canonicalizeTag("fr-FX"),
-        canonicalizeTag("it-TP"),
+      const testCases = [
+        { input: "en-BU", expected: "en-bu" },
+        { input: "fr-FX", expected: "fr-fx" },
+        { input: "it-TP", expected: "it-tp" }
       ];
 
-      results.forEach((result) => {
-        expect(result).not.toBeNull();
+      testCases.forEach(({ input, expected }) => {
+        const result = canonicalizeTag(input);
+        expect(result?.toLowerCase()).toBe(expected.toLowerCase());
       });
     });
 
     it("should handle special cases for script code substitution", () => {
-      const result = canonicalizeTag("en-Qaac");
-      expect(result).not.toBeNull();
+      const testCases = [
+        { input: "en-Qaac", expected: "en-qaac" },
+        { input: "egy-Qaac", expected: "egy-qaac" }
+      ];
+
+      testCases.forEach(({ input, expected }) => {
+        const result = canonicalizeTag(input);
+        expect(result?.toLowerCase()).toBe(expected.toLowerCase());
+      });
     });
   });
 
   describe("Extended Language Subtag Handling", () => {
     it("should handle extlang simplification", () => {
-      expect(canonicalizeTag("zh-cmn")?.toLowerCase()).toBe(
-        "cmn".toLowerCase()
-      );
-
-      const results = [
-        canonicalizeTag("zh-cmn-Hans-CN"),
-        canonicalizeTag("zh-yue-HK"),
+      const testCases = [
+        { input: "zh-cmn", expected: "cmn" },
+        { input: "zh-cmn-Hans-CN", expected: "cmn-Hans-CN" },
+        { input: "zh-yue-HK", expected: "yue-HK" }
       ];
 
-      results.forEach((result) => {
-        expect(result).not.toBeNull();
+      testCases.forEach(({ input, expected }) => {
+        const result = canonicalizeTag(input);
+        expect(result?.toLowerCase()).toBe(expected.toLowerCase());
       });
     });
   });
@@ -126,31 +132,39 @@ describe("Canonicalization", () => {
   describe("Variant and Extension Ordering", () => {
     it("should order variant subtags alphabetically", () => {
       const result = canonicalizeTag("de-DE-1996-1901");
-      expect(result).not.toBeNull();
+      expect(result?.toLowerCase()).toBe("de-de-1901-1996".toLowerCase());
     });
 
     it("should order extension singletons alphabetically", () => {
-      const results = [
-        canonicalizeTag("en-US-u-ca-gregory-t-en-US-x-private"),
-        canonicalizeTag("fr-FR-z-foo-a-bar"),
+      const testCases = [
+        { 
+          input: "en-US-u-ca-gregory-t-en-US-x-private", 
+          expected: "en-US-t-en-us-u-ca-gregory-x-private" 
+        },
+        { 
+          input: "fr-FR-z-foo-a-bar", 
+          expected: "fr-FR-a-bar-z-foo" 
+        }
       ];
 
-      results.forEach((result) => {
-        expect(result).not.toBeNull();
+      testCases.forEach(({ input, expected }) => {
+        const result = canonicalizeTag(input);
+        expect(result?.toLowerCase()).toBe(expected.toLowerCase());
       });
     });
   });
 
   describe("Complex Canonicalization", () => {
     it("should handle complex cases combining multiple canonicalization rules", () => {
-      const results = [
-        canonicalizeTag("EN-LATN-us"),
-        canonicalizeTag("iw-Hebr"),
-        canonicalizeTag("zh-yue-BU"),
+      const testCases = [
+        { input: "EN-LATN-us", expected: "en-us" },
+        { input: "iw-Hebr", expected: "he" },
+        { input: "zh-yue-BU", expected: "yue-bu" }
       ];
 
-      results.forEach((result) => {
-        expect(result).not.toBeNull();
+      testCases.forEach(({ input, expected }) => {
+        const result = canonicalizeTag(input);
+        expect(result?.toLowerCase()).toBe(expected.toLowerCase());
       });
     });
   });

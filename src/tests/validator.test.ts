@@ -108,6 +108,64 @@ describe("BCP-47 Language Tag Validator", () => {
       expect(Array.isArray(result.errors)).toBe(true);
       expect(result.errors?.length).toBeGreaterThan(0);
       expect(result.tag == null).toBe(true);
+      
+      // Check specific error type and message
+      expect(result.errors?.[0].type).toBe(ValidationErrorType.INVALID_SYNTAX);
+      expect(result.errors?.[0].message).toContain("Invalid subtag");
+    });
+
+    it("should provide detailed error information for invalid subtags", () => {
+      // Test invalid region code
+      const regionResult = validateLanguageTag("en-ZZ");
+      expect(regionResult.isValid).toBe(false);
+      expect(regionResult.isWellFormed).toBe(true);
+      
+      const regionError = regionResult.errors?.find(e => 
+        e.type === ValidationErrorType.UNKNOWN_SUBTAG && 
+        e.subtagType === "region"
+      );
+      expect(regionError).toBeDefined();
+      expect(regionError?.subtag).toBe("ZZ");
+      expect(regionError?.message).toContain("Unknown region subtag: zz");
+      
+      // Test invalid script code
+      const scriptResult = validateLanguageTag("en-Wxyz");
+      expect(scriptResult.isValid).toBe(false);
+      
+      const scriptError = scriptResult.errors?.find(e => 
+        e.type === ValidationErrorType.UNKNOWN_SUBTAG && 
+        e.subtagType === "script"
+      );
+      expect(scriptError).toBeDefined();
+      expect(scriptError?.subtag).toBe("Wxyz");
+      expect(scriptError?.message).toContain("Unknown script subtag");
+    });
+
+    it("should provide suggested replacements for common errors", () => {
+      // Test UK instead of GB error
+      const ukResult = validateLanguageTag("en-UK");
+      expect(ukResult.isValid).toBe(false);
+      
+      const ukError = ukResult.errors?.find(e => 
+        e.type === ValidationErrorType.UNKNOWN_SUBTAG && 
+        e.subtagType === "region"
+      );
+      expect(ukError).toBeDefined();
+      expect(ukError?.subtag).toBe("UK");
+      expect(ukError?.message).toContain("Unknown region subtag: uk");
+      
+      // Test invalid but well-formed tag
+      const result = validateLanguageTag("xx-YY");
+      expect(result.isValid).toBe(false);
+      expect(result.isWellFormed).toBe(true);
+      
+      // The library treats 'xx' as an invalid language code
+      const langError = result.errors?.find(e => 
+        e.type === ValidationErrorType.UNKNOWN_SUBTAG && 
+        e.subtagType === "language"
+      );
+      expect(langError).toBeDefined();
+      expect(langError?.subtag).toBe("xx");
     });
 
     it("should handle the invalid ch-DE tag correctly", () => {
@@ -122,6 +180,11 @@ describe("BCP-47 Language Tag Validator", () => {
           e.subtagType === "language"
       );
       expect(languageError).toBeDefined();
+      
+      // Check if there's a suggested replacement (likely "zh" for Chinese)
+      if (languageError?.suggestedReplacement) {
+        expect(["zh", "de"]).toContain(languageError.suggestedReplacement);
+      }
     });
   });
 

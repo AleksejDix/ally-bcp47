@@ -89,6 +89,56 @@ describe("Language Tag Parser", () => {
     expect(parsed?.extensions?.t).toEqual(["m0", "ascii"]);
   });
 
+  it("should handle complex tags with multiple components", () => {
+    // A very complex tag with all types of components
+    const { parsed, errors } = parseLanguageTag(
+      "zh-cmn-Hans-CN-variant1-variant2-a-ext1-b-ext2-x-private1-private2"
+    );
+    expect(errors).toHaveLength(0);
+    expect(parsed).toMatchObject({
+      language: "zh",
+      extlang: ["cmn"],
+      script: "hans",
+      region: "cn",
+      variants: ["variant1", "variant2"],
+      privateuse: ["private1", "private2"]
+    });
+    expect(parsed?.extensions).toBeDefined();
+    expect(parsed?.extensions?.a).toEqual(["ext1"]);
+    expect(parsed?.extensions?.b).toEqual(["ext2"]);
+
+    // Test with unusual but valid variant subtags (numeric)
+    const numericVariant = parseLanguageTag("de-DE-1901-1996");
+    expect(numericVariant.parsed).toMatchObject({
+      language: "de",
+      region: "de",
+      variants: ["1901", "1996"]
+    });
+
+    // Test with long private use section
+    const longPrivateUse = parseLanguageTag("en-x-private1-private2-private3-private4-private5");
+    expect(longPrivateUse.parsed).toMatchObject({
+      language: "en",
+      privateuse: ["private1", "private2", "private3", "private4", "private5"]
+    });
+  });
+
+  it("should parse a language tag with multiple extension components correctly", () => {
+    // Test complex Unicode extensions
+    const complexUnicode = parseLanguageTag("en-US-u-ca-gregory-nu-latn-tz-usnyc-cu-usd");
+    expect(complexUnicode.errors).toHaveLength(0);
+    expect(complexUnicode.parsed?.extensions?.u).toEqual([
+      "ca", "gregory", "nu", "latn", "tz", "usnyc", "cu", "usd"
+    ]);
+
+    // Test with multiple extension singletons
+    const multipleExtensions = parseLanguageTag("en-a-ext1-value-b-ext2-value-c-ext3-value");
+    expect(multipleExtensions.errors).toHaveLength(0);
+    expect(multipleExtensions.parsed?.extensions?.a).toEqual(["ext1", "value"]);
+    expect(multipleExtensions.parsed?.extensions?.b).toEqual(["ext2", "value"]);
+    expect(multipleExtensions.parsed?.extensions?.c).toEqual(["ext3", "value"]);
+  });
+
   it("should parse a language tag with private use", () => {
     const { parsed, errors } = parseLanguageTag("en-x-private");
     expect(errors).toHaveLength(0);
