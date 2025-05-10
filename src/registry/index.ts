@@ -10,8 +10,6 @@ export * from "./iso15924.js";
 import {
   isValidLanguageCode,
   getSuggestedLanguageCode,
-  ISO_639_LANGUAGES,
-  LANGUAGE_CODE_CORRECTIONS,
   getLanguagePreferredValue,
   getExtlangPreferredValue,
   hasPreferredLanguageValue,
@@ -21,8 +19,6 @@ import {
 import {
   isValidRegionCode,
   getSuggestedRegionCode,
-  ISO_3166_REGIONS,
-  REGION_CODE_CORRECTIONS,
   getRegionPreferredValue,
   hasPreferredRegionValue,
 } from "./iso3166.js";
@@ -30,7 +26,6 @@ import {
 import {
   isValidScriptCode,
   normalizeScriptCode,
-  ISO_15924_SCRIPTS,
   getScriptPreferredValue,
   hasPreferredScriptValue,
   getLanguageSubtagSuppressScript,

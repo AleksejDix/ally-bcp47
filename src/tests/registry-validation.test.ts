@@ -1,9 +1,7 @@
 import { describe, it, expect } from "vitest";
 import {
   validateLanguageTag,
-  isValid,
   canonicalizeTag,
-  ValidationErrorType,
 } from "../index";
 
 describe("Registry Validation and Normalization", () => {

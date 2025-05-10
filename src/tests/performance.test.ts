@@ -57,7 +57,7 @@ function runPerformanceTest(
     inputs.forEach(input => {
       try {
         fn(input);
-      } catch (e) {
+      } catch {
         // Ignore errors during warm-up
       }
     });
@@ -69,7 +69,7 @@ function runPerformanceTest(
     inputs.forEach(input => {
       try {
         fn(input);
-      } catch (e) {
+      } catch {
         // Ignore errors during benchmark
       }
     });
@@ -141,7 +141,6 @@ describe('Performance Tests', () => {
     it('should handle typical workflow efficiently', () => {
       const testFn = (tag: string) => {
         if (isWellFormed(tag)) {
-          const parsed = parseTag(tag);
           return canonicalizeTag(tag);
         }
         return null;

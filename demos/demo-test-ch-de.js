@@ -2,7 +2,6 @@ import {
   validateLanguageTag,
   isWellFormed,
   isValid,
-  parseTag,
 } from "./dist/index.js";
 
 // Test the ch-DE tag specifically

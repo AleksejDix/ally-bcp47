@@ -113,7 +113,7 @@ runTest('Complex tags', validateLanguageTag, testCases.complex);
 runTest('Tags with extensions', validateLanguageTag, testCases.withExtensions);
 runTest('Tags with private use', validateLanguageTag, testCases.withPrivateUse);
 runTest('Invalid tags', tag => {
-  try { validateLanguageTag(tag); } catch(e) {}
+  try { validateLanguageTag(tag); } catch {}
 }, testCases.invalid);
 console.log('');
 

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { validateLanguageTag, isWellFormed, isValid, parseTag } from "../index";
+import { validateLanguageTag, parseTag } from "../index";
 
 /**
  * Americans with Disabilities Act (ADA) Compliance Tests

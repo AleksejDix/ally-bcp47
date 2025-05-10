@@ -6,7 +6,7 @@
  * in the context of ADA compliance for web accessibility.
  */
 
-import { validateLanguageTag, isValid, parseTag } from "./dist/index.js";
+import { validateLanguageTag} from "./dist/index.js";
 
 // Demo header
 console.log("==========================================================");

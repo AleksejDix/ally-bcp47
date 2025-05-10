@@ -73,37 +73,26 @@ describe("European Countries Language Tag Validation", () => {
     { country: "Serbia (Latin script)", tags: ["sr-Latn-RS"] }, // Serbian in Latin script
   ];
 
-  // All European language tags
-  const allEuropeanTags = [
-    ...euMemberStates.flatMap((country) => country.tags),
-    ...nonEuEuropeanCountries.flatMap((country) => country.tags),
-    ...specialCases.flatMap((country) => country.tags),
-  ];
+  // Helper function to validate tags
+  const validateTags = (country: string, tags: string[], skipValidityCheck = false) => {
+    tags.forEach((tag) => {
+      const result = validateLanguageTag(tag);
+      expect(result.isWellFormed, `${country} tag ${tag} should be well-formed`).toBe(true);
+      
+      if (!skipValidityCheck) {
+        expect(result.isValid, `${country} tag ${tag} should be valid`).toBe(true);
+        expect(isValid(tag), `${country} tag ${tag} should pass isValid`).toBe(true);
+      }
+      
+      expect(isWellFormed(tag), `${country} tag ${tag} should pass isWellFormed`).toBe(true);
+    });
+  };
 
   // Test EU Member States
   describe("EU Member States", () => {
     it("should validate all EU member state language tags", () => {
       euMemberStates.forEach(({ country, tags }) => {
-        tags.forEach((tag) => {
-          const result = validateLanguageTag(tag);
-          expect(
-            result.isWellFormed,
-            `${country} tag ${tag} should be well-formed`
-          ).toBe(true);
-          expect(result.isValid, `${country} tag ${tag} should be valid`).toBe(
-            true
-          );
-
-          // Also check the convenience functions
-          expect(
-            isWellFormed(tag),
-            `${country} tag ${tag} should pass isWellFormed`
-          ).toBe(true);
-          expect(
-            isValid(tag),
-            `${country} tag ${tag} should pass isValid`
-          ).toBe(true);
-        });
+        validateTags(country, tags);
       });
     });
   });
@@ -112,31 +101,9 @@ describe("European Countries Language Tag Validation", () => {
   describe("Non-EU European Countries", () => {
     it("should validate all non-EU European country language tags", () => {
       nonEuEuropeanCountries.forEach(({ country, tags }) => {
-        tags.forEach((tag) => {
-          const result = validateLanguageTag(tag);
-          expect(
-            result.isWellFormed,
-            `${country} tag ${tag} should be well-formed`
-          ).toBe(true);
-
-          // For the Montenegrin code (cnr), we expect it to be well-formed but it might not be valid
-          // since it's not officially in ISO 639 yet
-          if (tag !== "cnr-ME") {
-            expect(
-              result.isValid,
-              `${country} tag ${tag} should be valid`
-            ).toBe(true);
-            expect(
-              isValid(tag),
-              `${country} tag ${tag} should pass isValid`
-            ).toBe(true);
-          }
-
-          expect(
-            isWellFormed(tag),
-            `${country} tag ${tag} should pass isWellFormed`
-          ).toBe(true);
-        });
+        // Skip validity check for Montenegrin code (cnr) as it's not yet in ISO 639
+        const skipValidityCheck = tags.includes("cnr-ME");
+        validateTags(country, tags, skipValidityCheck);
       });
     });
   });
@@ -145,25 +112,7 @@ describe("European Countries Language Tag Validation", () => {
   describe("Special Cases and Variants", () => {
     it("should validate all special case language tags", () => {
       specialCases.forEach(({ country, tags }) => {
-        tags.forEach((tag) => {
-          const result = validateLanguageTag(tag);
-          expect(
-            result.isWellFormed,
-            `${country} tag ${tag} should be well-formed`
-          ).toBe(true);
-          expect(result.isValid, `${country} tag ${tag} should be valid`).toBe(
-            true
-          );
-
-          expect(
-            isWellFormed(tag),
-            `${country} tag ${tag} should pass isWellFormed`
-          ).toBe(true);
-          expect(
-            isValid(tag),
-            `${country} tag ${tag} should pass isValid`
-          ).toBe(true);
-        });
+        validateTags(country, tags);
       });
     });
   });
@@ -171,44 +120,24 @@ describe("European Countries Language Tag Validation", () => {
   // Test incorrect/invalid European country tags
   describe("Invalid European Tags", () => {
     const invalidTags = [
-      "xx-DE", // Invalid language code
-      "de-XX", // Invalid country code
-      "en-EU", // EU is not a valid country code for language tags
-      "ch-DE", // ch is not a language code, it's a country code
-      "de-DE-", // Trailing hyphen
-      "fr-FR-fr", // Duplicate language as variant
+      { tag: "xx-DE", description: "Invalid language code", shouldBeWellFormed: true },
+      { tag: "de-XX", description: "Invalid country code", shouldBeWellFormed: true },
+      { tag: "en-EU", description: "EU is not a valid country code", shouldBeWellFormed: true },
+      { tag: "ch-DE", description: "ch is not a language code", shouldBeWellFormed: true },
+      { tag: "de-DE-", description: "Trailing hyphen", shouldBeWellFormed: false },
+      { tag: "fr-FR-fr", description: "Duplicate language as variant", shouldBeWellFormed: false },
     ];
 
     it("should correctly identify invalid European tags", () => {
-      invalidTags.forEach((tag) => {
-        // In our current implementation, some of these might pass syntax validation
-        // but with full registry validation they should fail
+      invalidTags.forEach(({ tag, description, shouldBeWellFormed }) => {
         const result = validateLanguageTag(tag);
-
-        if (tag === "xx-DE" || tag === "de-XX" || tag === "en-EU") {
-          // These should eventually fail with registry validation
-          // but may pass syntax checks
-          expect(result.isWellFormed).toBe(true);
-        }
-
-        if (tag === "de-DE-" || tag === "fr-FR-fr") {
-          // These should fail even with just syntax checks
-          expect(result.isWellFormed).toBe(false);
-        }
-
-        // Note: With full registry validation implementation, we would check isValid is false
-        // for the invalid tags, but our current implementation doesn't do registry validation yet
+        expect(result.isWellFormed, `${description} (${tag})`).toBe(shouldBeWellFormed);
       });
     });
   });
 
   // Test for accessibility-related extensions
   describe("Accessibility Extensions", () => {
-    // Unicode extension subtags relevant for accessibility
-    // u-co: Collation
-    // u-nu: Number system
-    // u-ca: Calendar
-    // u-fw: First day of week
     const accessibilityTags = [
       "en-GB-u-co-phonebk", // Phonebook sort order
       "de-DE-u-co-phonebk", // Phonebook sort order for German
@@ -222,9 +151,7 @@ describe("European Countries Language Tag Validation", () => {
     it("should validate language tags with accessibility extensions", () => {
       accessibilityTags.forEach((tag) => {
         const result = validateLanguageTag(tag);
-        expect(result.isWellFormed, `Tag ${tag} should be well-formed`).toBe(
-          true
-        );
+        expect(result.isWellFormed, `Tag ${tag} should be well-formed`).toBe(true);
         expect(result.isValid, `Tag ${tag} should be valid`).toBe(true);
       });
     });
@@ -232,19 +159,17 @@ describe("European Countries Language Tag Validation", () => {
 
   // Test for transformations
   describe("Tag Normalization", () => {
-    it("should correctly normalize case in language tags", () => {
-      const testCases = [
-        { input: "EN-GB", expected: "en-GB" },
-        { input: "FR-fr", expected: "fr-FR" },
-        { input: "De-Ch", expected: "de-CH" },
-        { input: "IT-it", expected: "it-IT" },
-      ];
+    const testCases = [
+      { input: "EN-GB", expected: "en-GB" },
+      { input: "FR-fr", expected: "fr-FR" },
+      { input: "De-Ch", expected: "de-CH" },
+      { input: "IT-it", expected: "it-IT" },
+    ];
 
+    it("should correctly normalize case in language tags", () => {
       testCases.forEach(({ input, expected }) => {
         const result = validateLanguageTag(input);
         expect(result.isWellFormed).toBe(true);
-        // Check that the tag is properly normalized according to BCP-47
-        // Language tags lowercase, region tags uppercase
         expect(result.tag?.tag).toBe(expected);
       });
     });

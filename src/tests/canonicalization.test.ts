@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { validateLanguageTag, canonicalizeTag } from "../index";
+import { canonicalizeTag } from "../index";
 
 describe("Canonicalization", () => {
   describe("Basic Canonicalization", () => {

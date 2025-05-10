@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { validateLanguageTag, isWellFormed, isValid, parseTag } from "../index";
+import { validateLanguageTag, parseTag } from "../index";
 
 /**
  * Section 508 Compliance Tests
@@ -69,28 +69,10 @@ describe("Section 508 Compliance Tests", () => {
 
   describe("Federal Language Support", () => {
     it("should validate all federal government language tags", () => {
-      const federalLanguages = [
-        "en-US", // English (United States)
-        "es-US", // Spanish (United States)
-        "fr-US", // French (United States)
-        "de-US", // German (United States)
-        "zh-US", // Chinese (United States)
-        "ja-US", // Japanese (United States)
-        "ko-US", // Korean (United States)
-        "vi-US", // Vietnamese (United States)
-        "tl-US", // Tagalog (United States)
-        "ru-US", // Russian (United States)
-        "ar-US", // Arabic (United States)
-        "ht-US", // Haitian Creole (United States)
-        "nv-US", // Navajo (United States)
-        "chr-US", // Cherokee (United States)
-        "haw-US", // Hawaiian (United States)
-        "as-US", // American Sign Language
-      ];
-
-      federalLanguages.forEach((tag) => {
+      govLanguageTags.forEach(({ lang, tag }) => {
         const result = validateLanguageTag(tag);
-        expect(result.isWellFormed, `${tag} should be well-formed`).toBe(true);
+        expect(result.isWellFormed, `${lang} (${tag}) should be well-formed`).toBe(true);
+        expect(result.isValid, `${lang} (${tag}) should be valid`).toBe(true);
       });
     });
   });

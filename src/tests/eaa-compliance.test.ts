@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { validateLanguageTag, isWellFormed, isValid, parseTag } from "../index";
+import { validateLanguageTag, parseTag } from "../index";
 
 /**
  * European Accessibility Act (EAA) Compliance Tests

@@ -1,9 +1,6 @@
 import { describe, it, expect } from "vitest";
 import {
   validateLanguageTag,
-  isWellFormed,
-  isValid,
-  parseTag,
   ValidationErrorType,
 } from "../index";
 

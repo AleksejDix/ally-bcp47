@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect } from "vitest";
 import {
   validateLanguageTag,
   isWellFormed,
@@ -6,7 +6,6 @@ import {
   parseTag,
   VERSION,
 } from "../index";
-import * as validator from "../validators/validator";
 
 describe("BCP-47 Library Exports", () => {
   it("should export validateLanguageTag function", () => {

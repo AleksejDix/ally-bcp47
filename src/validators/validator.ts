@@ -5,7 +5,6 @@ import {
   ValidationOptions,
   ValidationResult,
   ValidationWarning,
-  ValidationWarningType,
 } from "../types/index.js";
 import { LANGUAGE_TAG_REGEX } from "../utils/constants.js";
 import { parseLanguageTag } from "./parser.js";
